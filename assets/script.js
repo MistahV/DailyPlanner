@@ -4,48 +4,43 @@ $(document).ready(function() {
   var date = moment();
   $("#currentDay").text(date.format("[Today's date is] MMM Do, YYYY"));
   
+  var containerEl = $(".container")
+  var timeArr = ["9AM","10AM", "11AM", "12PM", "1PM", "2PM", "3PM", "4PM", "5PM"]
 
-  var task9 = $("#9am")
-    //user clicks save button..
-  
-    
-      function saveTask() {
-        
-       var task9Input = task9.val();
-       task9.text(task9Input);
-       
-       console.log(task9Input);
+  for(i=0; i< timeArr.length; i++){
+    var newRow = $("<div>").attr("class", "row time-block").attr("data-time", i+9)
+    var newHour = $("<div>").attr("class", "col-md-1 hour").text(timeArr[i])
+    var newTextA = $("<textarea>").attr("id", timeArr[i]).attr("class", "col-md-10 description")
 
-       localStorage.setItem("9 AM Task", task9Input);
+    newTextA.val(localStorage.getItem(timeArr[i]))
+    var currentTime = date.hour()
+    console.log(i+9, date.hour())
+    if (currentTime > i+9) {
+            newTextA.addClass("past")
+           }
+           else if (currentTime == i+9) {
+            newTextA.addClass("present")
+           }
+           else {
+            newTextA.addClass("future")
+           }
 
-         //get stuff user put in textarea
-        //add that value to localstorage
-        //show message
-        //hide message after so many seconds
+    var newBtn = $("<button>").attr("class", "col-md-1 saveBtn").text("Save")
+
+    newRow.append(newHour)
+    newRow.append(newTextA)
+    newRow.append(newBtn)
+
+    containerEl.append(newRow)
+  }
+
+   
+    function saveTask(e) {
+        localStorage.setItem($(this).prev().attr("id"), $(this).prev().val())
        }
        
     
+    $('.saveBtn').on('click', saveTask);
     
-       $('.saveBtn').on('click', saveTask);
-    
-      //  function updateRowColor() {
-        //set variable to current time
-        //loop over each row of the class (time-block)
-          //find row time using data attribute (9 < 21)
-          //add 'past' css class by doing $(this).addCLass('past');
-            //use if else...
-     
-    
-     //color rows based on the time of day --> get right class from css
-    
-      //  updateRowColor();
-    
-      //  } 
-    
-     //load data from local storage and put it in the correct row
-     //set hourID textare to value of local storage key number 'hourID'
-    
-     
-     //display current date on the age - moment (getdocumentbyID)
 });
     
